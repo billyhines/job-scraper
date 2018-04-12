@@ -5,7 +5,7 @@ import datetime
 host = "localhost"
 database = "jobdb"
 user = "jobuser"
-password = "punch"
+password = "jobpw"
 
 conn = psycopg2.connect(host=host,database=database, user=user, password=password)
 
