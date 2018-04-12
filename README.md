@@ -20,8 +20,7 @@ search through multiple search terms, and it checks to make sure there
 are no duplicates at the end. The results are then stored in a csv file.
 
 I used the following tutorial to initialize my PostgreSQL database:
-[link](https://www.codementor.io/engineerapart/getting-started-
-with-postgresql-on-mac-osx-are8jcopb). Once I had a user and a database
+[link](https://www.codementor.io/engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb). Once I had a user and a database
 on my machine, I created the first two Jupyter Notebooks to initialize
 and then insert the first set of rows into the database. I created the
 third notebook to read in scraper results, update job listings that had
