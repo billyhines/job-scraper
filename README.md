@@ -15,17 +15,15 @@ job listings had been online for. In the future, I might also be able to
 use this data to look at hiring trends over time.
 
 ## Instructions
-scraper.py is the script used to scrape Indeed.com job listings. It can
+scraper.py holds the function used to scrape Indeed.com job listings. It can
 search through multiple search terms, and it checks to make sure there
-are no duplicates at the end. The results are then stored in a csv file.
+are no duplicates at the end. It returns a pandas DataFrame.
 
 I used the following tutorial to initialize my PostgreSQL database:
-[link](https://www.codementor.io/engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb). Once I had a user and a database
-on my machine, I created the first two Jupyter Notebooks to initialize
-and then insert the first set of rows into the database. I created the
-third notebook to read in scraper results, update job listings that had
-already been found, and read in new entries to the database. The final
-notebook will just read the results from the database and print them to
-a csv. I found myself running these final two notebooks so many times
-that I created updateAndRead.py to execute this all from the command
-line.
+[link](http://www.postgresqltutorial.com/install-postgresql/). Once I had a user and a database
+on my machine, I run the "Initial Scape and Insert" to initialize
+and then insert the first set of rows into the database. I created "Scrape and Update"
+to read in scraper results, update job listings that had
+already been found, and read in new entries to the database. The "Read All Results"
+script will just read the results from the database and print them to
+a csv. 
