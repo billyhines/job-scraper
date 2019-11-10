@@ -3,68 +3,35 @@ import psycopg2
 import datetime
 import scraper
 
+# Scrape
+max_results_per_title = 100
+title_set = ["data+scientist", "data+analyst"]
 
+scrape_df = scraper.indeed_scraper(title_set, max_results_per_title)
+
+
+# Connect to DB and insert data
 host = "localhost"
 database = "jobdb"
 user = "postgres"
 password = "Password1"
 
-
-# In[16]:
-
-
 conn = psycopg2.connect(host=host,database=database, user=user, password=password)
 
 
-# In[17]:
-
-
-# Read in the results from the scraper
-
-df = pd.read_csv('jobs.csv')
-
-
-# In[18]:
-
-
-# Remove the index column
-
-df.drop(df.columns[0], axis=1, inplace=True)
-
-
-# In[19]:
-
-
-df.head()
-
-
-# In[20]:
-
-
 # Our database doesn't like our apostrophes, we can just delete them
-
-df['summary'].replace(regex=True,inplace=True,to_replace='\047',value='')
-df['job_title'].replace(regex=True,inplace=True,to_replace='\047',value='')
-df['company_name'].replace(regex=True,inplace=True,to_replace='\047',value='')
-
-
-# In[23]:
-
+scrape_df['summary'].replace(regex=True,inplace=True,to_replace='\047',value='')
+scrape_df['job'].replace(regex=True,inplace=True,to_replace='\047',value='')
+scrape_df['company'].replace(regex=True,inplace=True,to_replace='\047',value='')
 
 # Keep a timestamp so we know how long we've had each job listing for
-
 now = datetime.datetime.now()
 
-
-# In[24]:
-
-
 # Iterate through the scraped job listings
-
-for index, row in df.iterrows():
+for index, row in scrape_df.iterrows():
     query = """
     SELECT job_id from jobs
-    WHERE job_title = '""" + row['job_title'] +"""' AND company_name = '""" + row['company_name'] + """' AND location = '""" + row['location'] + """' AND summary = '""" + row['summary'] + """';"""
+    WHERE job_title = '""" + row['job'] +"""' AND company_name = '""" + row['company'] + """' AND location = '""" + row['location'] + """' AND summary = '""" + row['summary'] + """';"""
 
     cur = conn.cursor()
     cur.execute(query)
@@ -85,14 +52,11 @@ for index, row in df.iterrows():
         command = """
         INSERT INTO jobs (job_title, company_name, location, summary, first_found, last_found)
         VALUES
-        ('""" + row['job_title'] + """','""" + row['company_name'] + """','""" + row['location'] + """','""" + row['summary'] + """','""" + now.strftime("%Y-%m-%d %H:%M") +"""', '""" +now.strftime("%Y-%m-%d %H:%M")+ """');"""
+        ('""" + row['job'] + """','""" + row['company'] + """','""" + row['location'] + """','""" + row['summary'] + """','""" + now.strftime("%Y-%m-%d %H:%M") +"""', '""" +now.strftime("%Y-%m-%d %H:%M")+ """');"""
         cur = conn.cursor()
         cur.execute(command)
         cur.close()
         conn.commit()
-
-
-# In[25]:
 
 
 cur.close()
